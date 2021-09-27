@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.js"></script>
+</head>
+<body>
+<div id="app"></div>
+<script>
+    var SERVICE_BASE = 'https://0772-183-159-254-252.ngrok.io'
+
+    // 获取url参数
+    function getQueryVariable() {
+        var url = location.search; //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+
+    // 获取用户信息
+    function getUserInfo() {
+        var params = getQueryVariable();
+        var openid = params.openid;
+        if (!openid) {
+            window.location.href = SERVICE_BASE + '/goAuth?webUrl=' + window.location.href;
+        } else {
+            let html = `头像：<img src="${params.headimgurl}">`
+            let app = document.getElementById('app');
+            app.innerHTML = html;
+        }
+    }
+
+    window.addEventListener('load', function () {
+        getUserInfo();
+    })
+</script>
+</body>
+</html>
